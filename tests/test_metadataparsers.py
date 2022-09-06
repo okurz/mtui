@@ -50,12 +50,12 @@ def test_parse_old(log_txt):
     assert report.hostnames == {"s390vsl138.suse.de", "s390vsl116.suse.de"}
 
 
-def test_parse_new(log_txt, log_json):
+def test_parse_new(log2_txt, log_json):
     report = FakeTestreport()
 
     JSONParser.parse(report, log_json)
 
-    for line in log_txt.splitlines():
+    for line in log2_txt.splitlines():
         ReducedMetadataParser.parse(report, line)
 
     assert report.rating == "low"
@@ -64,7 +64,7 @@ def test_parse_new(log_txt, log_json):
     assert report.rrid == RequestReviewID("SUSE:Maintenance:24993:275518")
     assert report.jira == {"SLE-22357": ""}
     assert report.repository == "http://download.suse.de/ibs/SUSE:/Maintenance:/24993/"
-    assert report.reviewer == ""  # new format don't have this field
+    assert report.reviewer == "#team-lsg-qe-maintenance"
     assert report.packager == "slemke@suse.com"
     assert report.products == [
         "SLE-Module-Development-Tools-OBS 15-SP4 (aarch64, ppc64le, s390x, x86_64)",

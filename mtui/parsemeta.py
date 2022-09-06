@@ -7,6 +7,7 @@ class ReducedMetadataParser:
     hostnames = re.compile(r".* \(reference host: (\S+).*\)")
     jira = re.compile(r'Jira ([A-Z]+-\d+) \("(.*)"\):')
     bugs = re.compile(r'Bug (\d+) \("(.*)"\):')
+    reviewer = re.compile(r"^(?:Test Plan )?[Rr]eviewer(?:s)?: (.+)")
 
     @classmethod
     def parse(cls, results, line: str) -> None:
@@ -24,6 +25,11 @@ class ReducedMetadataParser:
         match = re.search(cls.bugs, line)
         if match:
             results.bugs[match.group(1)] = match.group(2)
+            return
+
+        match = re.search(cls.reviewer, line)
+        if match:
+            results.reviewer = match.group(1)
             return
 
         return

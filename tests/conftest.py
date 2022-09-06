@@ -14,6 +14,12 @@ def log_txt():
 
 
 @pytest.fixture
+def log2_txt():
+    logfile = __root__ / "metadata" / "log2"
+    return logfile.read_text(errors="replace")
+
+
+@pytest.fixture
 def log_json():
     logfile = __root__ / "metadata" / "metadata.json"
     return loads(logfile.read_text())
